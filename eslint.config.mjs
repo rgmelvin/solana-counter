@@ -1,9 +1,9 @@
 import js from "@eslint/js";
 import globals from "globals";
 import parser from "@typescript-eslint/parser";
-import tsPlugin from "@typescript-eslint/eslint-plugin";
+import { configs } from "@typescript-eslint/eslint-plugin";
 import { defineConfig } from "eslint/config";
-import ts from "typescript";
+
 
 export default defineConfig([
   {
@@ -16,12 +16,12 @@ export default defineConfig([
       globals: globals.browser,
     },
     plugins: {
-      "@typescript-eslint": tsPlugin,
+      "@typescript-eslint": configs.recommended.plugins["@typescript-eslint"],
       js,
     },
     rules: {
       ...js.configs.recommended.rules,
-      ...ts.configs.recommended.rules,
+      ...configs.recommended.rules,
     },
   },
 ]);
