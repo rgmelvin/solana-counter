@@ -30,13 +30,13 @@ jobs:
         - name: Install Yarn
           run: npm install -g yarn
 
-        - name: Install project dependencies
-          run: yarn install
-
         - name: Install Anchor
           run: |
             curl -sSf https://release.anchor.so/install.sh | sh
-            echo "$HOME/.cargo/bin" >> GITHUB_PATH
+            echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+        
+        - name: Install project dependencies
+          run: yarn install
 
         - name: Run ESLint
           run: yarn lint
@@ -48,4 +48,4 @@ jobs:
           run: yarn clippy
 
         - name: Run Anchor Tests (Skip Local Validator)
-          run: anchor test --skip-local-validtator
+          run: anchor test --skip-local-validator
