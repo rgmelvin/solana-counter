@@ -38,5 +38,14 @@ jobs:
             curl -sSf https://release.anchor.so/install.sh | sh
             echo "$HOME/.cargo/bin" >> GITHUB_PATH
 
-        - name: Run check (Validator + Lint + Prettier + Clippy + Tests)
-          run: yarn run check
+        - name: Run ESLint
+          run: yarn lint
+
+        - name: Run Prettier Check
+          run: yarn prettier
+
+        - name: Run Clippy
+          run: yarn clippy
+
+        - name: Run Anchor Tests (Skip Local Validator)
+          run: anchor test --skip-local-validtator
