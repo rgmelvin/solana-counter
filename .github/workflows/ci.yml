@@ -32,7 +32,7 @@ jobs:
 
         - name: Install project dependencies
           run: yarn install
-          working-directory: Solana/Firstcontract/solana_counter
+          working-directory: Solana/FirstContract/solana_counter
 
         - name: Install Anchor
           run: |
