@@ -1,0 +1,30 @@
+{
+  "name": "solana_counter",
+  "version": "0.1.0",
+  "license": "ISC",
+  "scripts": {
+    "test": "anchor test --skip-local-validator",
+    "lint": "eslint ./tests --ext .ts",
+    "prettier": "prettier --check './**/*.{ts,tsx,js,jsx,json,md}'",
+    "format": "prettier --write './**/*.{ts,tsx,js,jsx,json,md}'",
+    "clippy": "cargo clippy --workspace --all-targets --all-features",
+    "check": "./start-validator-if-needed.sh && yarn lint && yarn prettier && yarn clippy && yarn test"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.1.0",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^9.1.1",
+    "chai": "^4.3.7",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^2.29.1",
+    "globals": "^13.18.0",
+    "mocha": "^10.2.0",
+    "prettier": "^3.2.5",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.3.3"
+  }
+}

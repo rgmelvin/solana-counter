@@ -31,3 +31,9 @@ test-ledger
 
 # Environment files
 .env
+
+# Ignore JSON in outputs but NOT project config
+!package.json
+!yarn.lock
+!tsconfig.json
+!Anchor.toml
