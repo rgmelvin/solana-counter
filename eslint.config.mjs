@@ -1,9 +1,10 @@
 import js from "@eslint/js";
 import globals from "globals";
 import parser from "@typescript-eslint/parser";
-import { configs } from "@typescript-eslint/eslint-plugin";
+import tsEslintPlugin from "@typescript-eslint/eslint-plugin";
 import { defineConfig } from "eslint/config";
 
+const { configs } = tsEslintPlugin;
 
 export default defineConfig([
   {
