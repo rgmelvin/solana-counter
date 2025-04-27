@@ -1,0 +1,33 @@
+# System files
+.DS_Store
+
+# Rust build artifacts
+target
+
+# Anchor artifacts
+.anchor
+target/idl/
+target/types/
+
+**/*.rs.bk
+
+# Node modules
+node_modules
+
+# Solana local ledger
+/validator-ledger/
+
+# Solana artifacts
+.solana/
+*.solana
+*.json
+
+test-ledger
+
+# Yarn artifacts
+.yarn/
+.pnp.*
+.yarnrc.yml
+
+# Environment files
+.env
