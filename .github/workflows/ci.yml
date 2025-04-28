@@ -60,13 +60,20 @@ jobs:
 
     - name: Start Solana Test Validator
       run: |
-        solana-test-validator --ledger /tmp/ledger --reset &
+        solana-test-validator --ledger /tmp/ledger --reset --quiet &
         sleep 10
 
-    - name: Create Temporary Solana Keypair
+    - name: Restore Dev Wallet from GitHub Secret
       run: |
         mkdir -p /home/runner/.config/solana
-        solana-keygen new --no-passphrase -o /home/runner/.config/solana/id.json
+        echo "${{ secrets.DEV_WALLET_JSON }}" > /home/runner/.config/solana/id.json
+        chmod 600 /home/runner/.config/solana/id.json
+
+    - name: Configure Solana CLI and Fund Wallet
+      run: |
+        solana config set --url http://localhost:8899
+        solana airdrop 100
+        solana balance
 
     - name: Run Anchor Tests (Skip Local Validator)
       run: anchor test --skip-local-validator
