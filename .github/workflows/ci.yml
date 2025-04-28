@@ -32,28 +32,42 @@ jobs:
     - name: Install Yarn
       run: npm install -g yarn
 
-    - name: Install Solana CLI (Anza Labs)
-      run: |
-        sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
-        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
-
     - name: Install Anchor CLI (Anza Labs)
       run: |
-        curl -sSfL https://release.anchor.so/install.sh | sh
-        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+        sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+        echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+
+    - name: Restore Wallet from GitHub Secret
+      run: |
+        mkdir -p /home/runner/.config/solana
+        echo "${{ secrets.SOLANA_DEV_WALLET }}" > /home/runner/.config/solana/id.json
+        chmod 600 /home/runner/.config/solana/id.json
+        solana config set --url http://localhost:8899
+        solana config set --keypair /home/runner/.config/solana/id.json
 
     - name: Install Project Dependencies
       run: yarn install
 
-    - name: Set up Solana Wallet
-      run: |
-        solana-keygen new --silent
-        solana config set --url http://localhost:8899
-        solana airdrop 100
-        solana balance
-
     - name: Anchor Version Check
       run: anchor --version
+
+    - name: Wait for Validator Health
+      run: |
+        echo "⏳ Waiting for local validator to be healthy..."
+        for i in {1..30}; do
+          if solana cluster-version --url http://localhost:8899 > /dev/null 2>&1; then
+            echo "✅ Validator is ready!"
+            break
+          else
+            echo "⏳ Validator not ready yet... retrying ($i/30)"
+            sleep 2
+          fi
+        done
+
+    - name: Fund Wallet
+      run: |
+        solana airdrop 100
+        solana balance
 
     - name: Run ESLint
       run: yarn lint
@@ -66,8 +80,3 @@ jobs:
 
     - name: Run Anchor Tests (Skip Local Validator)
       run: anchor test --skip-local-validator
-
-    - name: Cleanup Solana Wallet
-      if: always()
-      run: |
-        rm -rf /home/runner/.config/solana
