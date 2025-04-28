@@ -78,7 +78,12 @@ jobs:
     - name: Restore Dev Wallet from GitHub Secret
       run: |
         mkdir -p /home/runner/.config/solana
-        echo "${{ secrets.DEV_WALLET_JSON }}" > /home/runner/.config/solana/id.json
+        echo '${{ secrets.DEV_WALLET_JSON }}' > /home/runner/.config/solana/id.json
+        if ! grep -q '\[' /home/runner/.config/solana/id.json; then
+            echo "❌ DEV_WALLET_JSON GitHub Secret is missing or invalid."
+            cat /home/runner/.config/solana/id.json
+            exit 1
+        fi
         chmod 600 /home/runner/.config/solana/id.json
 
     - name: Configure Solana CLI and Fund Wallet
