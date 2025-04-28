@@ -35,6 +35,7 @@ jobs:
     - name: Install Anchor CLI (Anza Labs)
       run: |
         sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+        export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
         echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
 
     - name: Install Project Dependencies
@@ -60,11 +61,12 @@ jobs:
           exit 1
         fi
 
-    - name: Generate Local Wallet and Airdrop
+    - name: Setup Dev Wallet
       run: |
-        solana-keygen new --no-bip39-passphrase --force -o ~/.config/solana/id.json
+        mkdir -p ~/.config/solana
+        echo "${{ secrets.DEV_WALLET_JSON }}" > ~/.config/solana/id.json
         solana config set --url http://localhost:8899
-        echo "💸 Airdropping SOL..."
+        solana address
         solana airdrop 100
         solana balance
 
