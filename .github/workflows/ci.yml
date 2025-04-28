@@ -3,10 +3,10 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main
+        - main
   pull_request:
     branches:
-      - main
+        -main
 
 jobs:
   build-and-test:
@@ -24,6 +24,17 @@ jobs:
         toolchain: stable
         override: true
 
+    - name: Cache Cargo dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
+        restore-keys: |
+          cargo-${{ runner.os }}-
+
     - name: Install Node.js
       uses: actions/setup-node@v4
       with:
@@ -31,6 +42,16 @@ jobs:
 
     - name: Install Yarn
       run: npm install -g yarn
+
+    - name: Cache Yarn dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          ~/.cache/yarn
+        key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+        restore-keys: |
+          yarn-${{ runner.os }}-
 
     - name: Install Solana CLI (Anza Labs)
       run: |
@@ -89,6 +110,7 @@ jobs:
     - name: Configure Solana CLI and Fund Wallet
       run: |
         solana config set --url http://localhost:8899
+        echo "💸 Airdropping SOL to Dev Wallet..."
         solana airdrop 100
         solana balance
 
