@@ -1,53 +1,56 @@
 name: CI Pipeline
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
-        - name: Install Rust
-          uses: actions-rs/toolchain@v1
-          with:
-            toolchain: stable
-            override: true
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
 
-        - name: Install Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: '20'
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
 
-        - name: Install Yarn
-          run: npm install -g yarn
+    - name: Install Yarn
+      run: npm install -g yarn
 
-        - name: Install Anchor CLI
-          run: |
-            curl -sSf https://release.anchor.so/install.sh | sh
-            echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-        
-        - name: Install project dependencies
-          run: yarn install
+    - name: Install Anchor CLI (Anza Labs)
+      run: |
+        sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-        - name: Run ESLint
-          run: yarn lint
+    - name: Install Project Dependencies
+      run: yarn install
 
-        - name: Run Prettier Check
-          run: yarn prettier
+    - name: Anchor Version Check
+      run: anchor --version
 
-        - name: Run Clippy
-          run: yarn clippy
+    - name: Run ESLint
+      run: yarn lint
 
-        - name: Run Anchor Tests (Skip Local Validator)
-          run: anchor test --skip-local-validator
+    - name: Run Prettier Check
+      run: yarn prettier
+
+    - name: Run Clippy
+      run: yarn clippy
+
+    - name: Run Anchor Tests (Skip Local Validator)
+      run: anchor test --skip-local-validator
