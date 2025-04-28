@@ -35,8 +35,9 @@ jobs:
         - name: Install Anchor CLI
           run: |
             curl -sSf https://release.anchor.so/install.sh | sh
-          env:
-            PATH: ${{ env.HOME }}/.cargo/bin:${{ env.PATH }}
+
+        - name: Add Cargo bin to PATH
+          run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
         
         - name: Install project dependencies
           run: yarn install
