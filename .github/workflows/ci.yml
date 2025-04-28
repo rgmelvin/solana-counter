@@ -32,43 +32,22 @@ jobs:
     - name: Install Yarn
       run: npm install -g yarn
 
-    - name: Install Anchor CLI (Anza Labs)
+    - name: Install Solana CLI (Anza Labs)
       run: |
         sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
-        export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
         echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+
+    - name: Install Anchor CLI
+      run: |
+        cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+        avm install latest
+        avm use latest
 
     - name: Install Project Dependencies
       run: yarn install
 
     - name: Anchor Version Check
       run: anchor --version
-
-    - name: Start Local Validator (Detached)
-      run: |
-        solana-test-validator --reset --quiet --limit-ledger-size &
-        echo "Validator starting, waiting for it to become healthy..."
-        for i in {1..30}; do
-          if curl --output /dev/null --silent --head --fail http://localhost:8899; then
-            echo "✅ Validator is healthy!"
-            break
-          fi
-          echo "⏳ Waiting for validator... ($i/30)"
-          sleep 2
-        done
-        if ! curl --output /dev/null --silent --head --fail http://localhost:8899; then
-          echo "❌ Validator failed to start."
-          exit 1
-        fi
-
-    - name: Setup Dev Wallet
-      run: |
-        mkdir -p ~/.config/solana
-        echo "${{ secrets.DEV_WALLET_JSON }}" > ~/.config/solana/id.json
-        solana config set --url http://localhost:8899
-        solana address
-        solana airdrop 100
-        solana balance
 
     - name: Run ESLint
       run: yarn lint
@@ -78,6 +57,16 @@ jobs:
 
     - name: Run Clippy
       run: yarn clippy
+
+    - name: Start Solana Test Validator
+      run: |
+        solana-test-validator --ledger /tmp/ledger --reset &
+        sleep 10
+
+    - name: Create Temporary Solana Keypair
+      run: |
+        mkdir -p /home/runner/.config/solana
+        solana-keygen new --no-passphrase -o /home/runner/.config/solana/id.json
 
     - name: Run Anchor Tests (Skip Local Validator)
       run: anchor test --skip-local-validator
