@@ -32,12 +32,15 @@ jobs:
     - name: Install Yarn
       run: npm install -g yarn
 
-    - name: Install Anchor CLI (Anza Labs)
+    - name: Install Solana CLI (Anza Labs)
       run: |
         sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
 
-    - name: Add Solana and Anchor to PATH
-      run: echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+    - name: Install Anchor CLI (via Cargo + AVM)
+      run: |
+        cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+        avm install latest
+        avm use latest
 
     - name: Install Project Dependencies
       run: yarn install
