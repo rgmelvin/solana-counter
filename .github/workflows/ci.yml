@@ -92,5 +92,11 @@ jobs:
         solana airdrop 100
         solana balance
 
+    - name: Restore Deploy Keypair
+      run: |
+        mkdir -p target/deploy
+        echo '${{ secrets.COUNTER_DEPLOY_KEYPAIR }}' > target/deploy/solana_counter-keypair.json
+        chmod 600 target/deploy/solana_counter-keypair.json
+
     - name: Run Anchor Tests (Skip Local Validator)
       run: anchor test --skip-local-validator
