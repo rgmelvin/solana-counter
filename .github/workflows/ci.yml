@@ -35,36 +35,36 @@ jobs:
     - name: Install Anchor CLI (Anza Labs)
       run: |
         sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
-        export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
         echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
-        anchor --version
-
-    - name: Restore Wallet from GitHub Secret
-      run: |
-        mkdir -p /home/runner/.config/solana
-        echo "${{ secrets.SOLANA_DEV_WALLET }}" > /home/runner/.config/solana/id.json
-        chmod 600 /home/runner/.config/solana/id.json
-        solana config set --url http://localhost:8899
-        solana config set --keypair /home/runner/.config/solana/id.json
 
     - name: Install Project Dependencies
       run: yarn install
 
-    - name: Wait for Validator Health
-      run: |
-        echo "⏳ Waiting for local validator to be healthy..."
-        for i in {1..30}; do
-          if solana cluster-version --url http://localhost:8899 > /dev/null 2>&1; then
-            echo "✅ Validator is ready!"
-            break
-          else
-            echo "⏳ Validator not ready yet... retrying ($i/30)"
-            sleep 2
-          fi
-        done
+    - name: Anchor Version Check
+      run: anchor --version
 
-    - name: Fund Wallet
+    - name: Start Local Validator (Detached)
       run: |
+        solana-test-validator --reset --quiet --limit-ledger-size &
+        echo "Validator starting, waiting for it to become healthy..."
+        for i in {1..30}; do
+          if curl --output /dev/null --silent --head --fail http://localhost:8899; then
+            echo "✅ Validator is healthy!"
+            break
+          fi
+          echo "⏳ Waiting for validator... ($i/30)"
+          sleep 2
+        done
+        if ! curl --output /dev/null --silent --head --fail http://localhost:8899; then
+          echo "❌ Validator failed to start."
+          exit 1
+        fi
+
+    - name: Generate Local Wallet and Airdrop
+      run: |
+        solana-keygen new --no-bip39-passphrase --force -o ~/.config/solana/id.json
+        solana config set --url http://localhost:8899
+        echo "💸 Airdropping SOL..."
         solana airdrop 100
         solana balance
 
