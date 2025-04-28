@@ -4,8 +4,6 @@ import parser from "@typescript-eslint/parser";
 import tsEslintPlugin from "@typescript-eslint/eslint-plugin";
 import { defineConfig } from "eslint/config";
 
-const { configs } = tsEslintPlugin;
-
 export default defineConfig([
   {
     files:["**/*.{js,mjs,cjs,ts}"],
@@ -17,12 +15,12 @@ export default defineConfig([
       globals: globals.browser,
     },
     plugins: {
-      "@typescript-eslint": configs.recommended.plugins["@typescript-eslint"],
+      "@typescript-eslint": tsPlugin,
       js,
     },
     rules: {
       ...js.configs.recommended.rules,
-      ...configs.recommended.rules,
+      ...tsPlugin.configs.recommended.rules,
     },
   },
 ]);
