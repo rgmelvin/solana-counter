@@ -47,7 +47,7 @@ jobs:
 
     - name: Set up Solana Wallet
       run: |
-        solana-keygen new --no-outfile --silent
+        solana-keygen new --silent
         solana config set --url http://localhost:8899
         solana airdrop 100
         solana balance
