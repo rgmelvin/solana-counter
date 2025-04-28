@@ -12,7 +12,10 @@ export default defineConfig([
       parserOptions: {
         project: "./tsconfig.json",
       },
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.mocha,
+      },
     },
     plugins: {
       "@typescript-eslint": tsPlugin,
