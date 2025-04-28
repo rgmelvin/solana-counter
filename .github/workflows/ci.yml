@@ -32,22 +32,32 @@ jobs:
     - name: Install Yarn
       run: npm install -g yarn
 
-    - name: Install Solana CLI (Anza Labs)
+    - name: Install Anchor CLI (Anza Labs)
       run: |
         sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
         echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
 
-    - name: Install Anchor CLI
-      run: |
-        cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
-        avm install latest
-        avm use latest
-
     - name: Install Project Dependencies
       run: yarn install
 
+    - name: Restore Solana Dev Wallet
+      run: |
+        mkdir -p /home/runner/.config/solana
+        echo '${{ secrets.SOLANA_DEV_WALLET }}' > /home/runner/.config/solana/id.json
+        solana config set --keypair /home/runner/.config/solana/id.json
+        solana config set --url http://localhost:8899
+
     - name: Anchor Version Check
       run: anchor --version
+
+    - name: Start Validator
+      run: solana-test-validator --ledger /tmp/ledger --reset --log
+
+    - name: Fund Wallet
+      run: |
+        sleep 5
+        solana airdrop 100
+        solana balance
 
     - name: Run ESLint
       run: yarn lint
@@ -58,22 +68,5 @@ jobs:
     - name: Run Clippy
       run: yarn clippy
 
-    - name: Start Solana Test Validator
-      run: |
-        solana-test-validator --ledger /tmp/ledger --reset --quiet &
-        sleep 10
-
-    - name: Restore Dev Wallet from GitHub Secret
-      run: |
-        mkdir -p /home/runner/.config/solana
-        echo "${{ secrets.DEV_WALLET_JSON }}" > /home/runner/.config/solana/id.json
-        chmod 600 /home/runner/.config/solana/id.json
-
-    - name: Configure Solana CLI and Fund Wallet
-      run: |
-        solana config set --url http://localhost:8899
-        solana airdrop 100
-        solana balance
-
-    - name: Run Anchor Tests (Skip Local Validator)
+    - name: Run Anchor Tests
       run: anchor test --skip-local-validator
