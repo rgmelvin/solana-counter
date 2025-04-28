@@ -35,16 +35,22 @@ jobs:
     - name: Install Solana CLI (Anza Labs)
       run: |
         sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
-        echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
 
-    - name: Install Anchor CLI
+    - name: Install Anchor CLI (Anza Labs)
       run: |
-        cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
-        avm install latest
-        avm use latest
+        curl -sSfL https://release.anchor.so/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
     - name: Install Project Dependencies
       run: yarn install
+
+    - name: Set up Solana Wallet
+      run: |
+        solana-keygen new --no-outfile --silent
+        solana config set --url http://localhost:8899
+        solana airdrop 100
+        solana balance
 
     - name: Anchor Version Check
       run: anchor --version
@@ -58,15 +64,10 @@ jobs:
     - name: Run Clippy
       run: yarn clippy
 
-    - name: Start Solana Test Validator
-      run: |
-        solana-test-validator --ledger /tmp/ledger --reset &
-        sleep 10
-
-    - name: Create Temporary Solana Keypair
-      run: |
-        mkdir -p /home/runner/.config/solana
-        solana-keygen new --no-passphrase -o /home/runner/.config/solana/id.json
-
     - name: Run Anchor Tests (Skip Local Validator)
       run: anchor test --skip-local-validator
+
+    - name: Cleanup Solana Wallet
+      if: always()
+      run: |
+        rm -rf /home/runner/.config/solana
