@@ -42,6 +42,11 @@ jobs:
         avm install latest
         avm use latest
 
+    - name: Install cargo-build-sbf (required for Anchor)
+      run: |
+      cargo install --git https://github.com/anza-xyz/solana --locked cargo-build-sbf
+      
+
     - name: Install Project Dependencies
       run: yarn install
 
