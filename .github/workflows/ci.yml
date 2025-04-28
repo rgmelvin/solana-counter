@@ -63,5 +63,10 @@ jobs:
         solana-test-validator --ledger /tmp/ledger --reset &
         sleep 10
 
+    - name: Create Temporary Solana Keypair
+      run: |
+        mkdir -p /home/runner/.config/solana
+        solana-keygen new --no-passphrase -o /home/runner/.config/solana/id.json
+
     - name: Run Anchor Tests (Skip Local Validator)
       run: anchor test --skip-local-validator
