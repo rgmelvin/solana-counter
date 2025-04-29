@@ -48,39 +48,59 @@ graph TD
 
 ```mermaid
 flowchart TD
-    A[Checkout Code] --> B[Install Rust + Cargo Cache]
-    B --> C[Install Node.js + Yarn Cache]
-    C --> D[Install Solana CLI (Anza Labs)]
-    D --> E[Install Anchor CLI (via avm)]
-    E --> F[Install Project Deps (Yarn)]
-    F --> G[Runm Linters (ESLint, Prettier)]
-    G --> H[Run Clippy (Rust Linting)]
-    H --> I[Start Local Validator]
-    I --> J[Restore Dev Wallet from Secret]
-    J --> K[Fund Dev Wallet]
-    K --> L[Restore Deploy Keypair]
-    L --> M[Run Anchor Tests (Skip Local validator)]
+    A[Checkout Code]
+    B[Install Rust]
+    C[Cache Cargo Deps]
+    D[Install Node.js and Yarn]
+    E[Cache Yarn Deps]
+    F[Install Solana CLI]
+    G[Install Anchor CLI]
+    H[Install Project Deps]
+    I[Run ESLint]
+    J[Run Prettier Check]
+    K[Run Clippy]
+    L[Start Validator and Wait for Health]
+    M[Restore Dev Wallet]
+    N[Configure Solana CLI and Fund Wallet]
+    O[Restore Deploy Keypair]
+    P[Run Anchor Tests]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> M
+    M --> N
+    N --> O
+    O --> P
 ```
 
 ---
 
 ## 📋 Scripts Included
 
-| Script | Description |
-|:-------|:------------|
-|`yarn test` | Runs Anchor tests with validator already started (`anchor test --skip-local-validator`) |
-| `yarn lint` | Runs ESLint across TypeScript tests |
-| `yarn prettier` | Checks code formatting with Prettier |
-| `yarn format` | Auto-formats all code with Prettier |
-| `yarn clippy` | Runs Rust's `cargo clippy` across all targets |
-| `yarn check` | Runs full local pre-push check: validator start -> lint -> prettier -> clippy -> test |
+| Script          | Description                                                                             |
+| :-------------- | :-------------------------------------------------------------------------------------- |
+| `yarn test`     | Runs Anchor tests with validator already started (`anchor test --skip-local-validator`) |
+| `yarn lint`     | Runs ESLint across TypeScript tests                                                     |
+| `yarn prettier` | Checks code formatting with Prettier                                                    |
+| `yarn format`   | Auto-formats all code with Prettier                                                     |
+| `yarn clippy`   | Runs Rust's `cargo clippy` across all targets                                           |
+| `yarn check`    | Runs full local pre-push check: validator start -> lint -> prettier -> clippy -> test   |
 
 ### 🛠 Validator Control Scripts
 
-| Script | Description |
-|:-------|:------------|
+| Script                         | Description                                                  |
+| :----------------------------- | :----------------------------------------------------------- |
 | `start-validator-if-needed.sh` | Starts a Solana local validator if one isn't already running |
-|'stop-validator.sh | Stops the running Solana validator |
+| 'stop-validator.sh             | Stops the running Solana validator                           |
 
 These scripts allow **local development** that mirrors the **GitHub CI environment** exactly.
 
@@ -88,9 +108,9 @@ These scripts allow **local development** that mirrors the **GitHub CI environme
 
 ## 🔐 GitHub Secrets Required
 
-| Secret Name | Description |
-|:------------|:------------|
-| `SOLANA_DEV_WALLET` | The base64-encoded private key for the development wallet used to run tests |
+| Secret Name              | Description                                                                                         |
+| :----------------------- | :-------------------------------------------------------------------------------------------------- |
+| `SOLANA_DEV_WALLET`      | The base64-encoded private key for the development wallet used to run tests                         |
 | `COUNTER_DEPLOY_KEYPAIR` | The base64-encoded deploy keypair (corresponding to your `programId` in `lib.rs` and `Anchor.toml`) |
 
 Without these, deployment and tests **will fail**.
@@ -106,6 +126,7 @@ Without these, deployment and tests **will fail**.
 - **Yarn**: [Install UYarn](https://classic.yarnpkg.com/en/docs/install)
 - **Solana CLI**: [Install Solana CLI (Anza Labs)](https://docs.solana.com/cli/install-solana-cli-tools)
 - **Anchor CLI**:
+
 ```bash
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
 avm install latest
@@ -127,6 +148,7 @@ yarn check
 ```
 
 This will automatically:
+
 - Start a local validator (if needed)
 - Lint TypeScript code
 - Check Prettier formatting
@@ -151,6 +173,7 @@ This will automatically:
 ## ⭐ Why This Projectx is Special
 
 This project is deliberately built **not just to run**, but to:
+
 - Teach you **enterprise-level Solana development workflows**.
 - Build discipline around **code quality** and **continuous testing**.
 - Bridge the gap between **blockchain backend** and **modern web2/web3 practices**.
