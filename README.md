@@ -2,6 +2,12 @@
 
 [![CI Pipeline](https://github.com/rgmelvin/solana-counter/actions/workflows/ci.yml/badge.svg)](https://github.com/rgmelvin/solana-counter/actions/workflows/ci.yml)
 [![Licenses: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Build Status](https://img.shields.io/github/actions/workflow/status/rgmelvin/solana-counter/ci.yml?branch-main&style-flat-square)
+![License](https://img.shields.io/github/license/rgmelvin/solana-counter?style=flat-square)
+![Yarn](https://img.shields.io/badge/yarn-v1.22.22-blue?style=flat-square)
+![Node.js](https://img.shields.io/badge/node-20.x-brightgreen?styel=flate-square)
+![Built With](https://img.shields.io/badge/Built%20With-Anchor-red?style=flate-square)
+![Lint](https://img.shields.io/badge/lint-passing-brightgreen?style=flat-square)
 
 ---
 
