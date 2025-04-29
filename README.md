@@ -32,6 +32,7 @@ A simple **Anchor**-based **Solana smart contract** demonstrating:
 ---
 
 ## 📦 Project Structure
+
 > How the project directories and important files are organized.
 
 ```mermaid
@@ -62,6 +63,7 @@ graph TD
 ---
 
 ## 🚀 CI Workflow Overview
+
 > Automatic checks that run on every push and pull request
 
 ```mermaid
@@ -145,7 +147,6 @@ Without these, deployment and tests **will fail**.
 - **Solana CLI**: [Install Solana CLI (Anza Labs)](https://docs.solana.com/cli/install-solana-cli-tools)
 
 ---
-
 
 **➔ Install Anchor CLI:**
 
