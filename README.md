@@ -1,12 +1,23 @@
 # 🧮 Solana Counter Program
 
-[![CI Pipeline](https://github.com/rgmelvin/solana-counter/actions/workflows/ci.yml/badge.svg)](https://github.com/rgmelvin/solana-counter/actions/workflows/ci.yml)
-[![Licenses: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Build Status](https://img.shields.io/github/actions/workflow/status/rgmelvin/solana-counter/ci.yml?branch-main&style-flat-square)
-![Yarn](https://img.shields.io/badge/yarn-v1.22.22-blue?style=flat-square)
-![Node.js](https://img.shields.io/badge/node-20.x-brightgreen?styel=flate-square)
-![Built With](https://img.shields.io/badge/Built%20With-Anchor-red?style=flate-square)
-![Lint](https://img.shields.io/badge/lint-passing-brightgreen?style=flat-square)
+<p align="center">
+  <a href="https://github.com/rgmelvin/solana-counter/actions/workflows/ci.yml">
+    <img src="https://github.com/rgmelvin/solana-counter/actions/workflows/ci.yml/badge.svg" alt="CI Pipeline" />
+  </a>
+  <a href="https://github.com/rgmelvin/solana-counter/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/rgmelvin/solana-counter/ci.yml?branch=main&style=flat-square" alt="Build Status" />
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" />
+  </a>
+  <img src="https://img.shields.io/badge/yarn-v1.22.22-blue?style=flat-square" alt="Yarn" />
+  <img src="https://img.shields.io/badge/node-20.x-brightgreen?style=flat-square" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Built%20With-Anchor-red?style=flat-square" alt="Built With: Anchor" />
+  <img src="https://img.shields.io/badge/lint-passing-brightgreen?style=flat-square" alt="Lint" />
+  <img src="https://img.shields.io/github/issues/rgmelvin/solana-counter?style=flat-square" alt="Open Issues" />
+  <img src="https://img.shields.io/github/last-commit/rgmelvin/solana-counter/main?style=flat-square" alt="Last Commit" />
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome" />
+</p>
 
 ---
 
@@ -21,6 +32,7 @@ A simple **Anchor**-based **Solana smart contract** demonstrating:
 ---
 
 ## 📦 Project Structure
+> How the project directories and important files are organized.
 
 ```mermaid
 graph TD
@@ -50,6 +62,7 @@ graph TD
 ---
 
 ## 🚀 CI Workflow Overview
+> Automatic checks that run on every push and pull request
 
 ```mermaid
 flowchart TD
@@ -105,7 +118,7 @@ flowchart TD
 | Script                         | Description                                                  |
 | :----------------------------- | :----------------------------------------------------------- |
 | `start-validator-if-needed.sh` | Starts a Solana local validator if one isn't already running |
-| 'stop-validator.sh             | Stops the running Solana validator                           |
+| `stop-validator.sh`            | Stops the running Solana validator                           |
 
 These scripts allow **local development** that mirrors the **GitHub CI environment** exactly.
 
@@ -128,9 +141,13 @@ Without these, deployment and tests **will fail**.
 
 - **Rust**: [Install Rust](https://www.rust-lang.org/tools/install)
 - **Node.js**: [Install Node.js](https://nodejs.org/)
-- **Yarn**: [Install UYarn](https://classic.yarnpkg.com/en/docs/install)
+- **Yarn**: [Install Yarn](https://classic.yarnpkg.com/en/docs/install)
 - **Solana CLI**: [Install Solana CLI (Anza Labs)](https://docs.solana.com/cli/install-solana-cli-tools)
-- **Anchor CLI**:
+
+---
+
+
+**➔ Install Anchor CLI:**
 
 ```bash
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
@@ -160,22 +177,22 @@ This will automatically:
 - Run Rust Clippy
 - Run Anchor tests
 
-✅ Exactly like GitHub CI - ensuring perfect parity.
+✅ EMirrors the GitHub CI process exactly, ensuring full local parity.
 
 ---
 
 ## 🚧 Future Improvements (Proposed)
 
-- [ ] **Markdown Link Validation**: Ensure no broken internal/external links using tools like `lychee`.
+- [ ] **Lychee** (Markdwn Link Checker): [Lychee CLI](https://github.com/lycheeverse/lychee). Ensures there are no broken internal/external links.
 - [ ] **IDL File Consistency Check**: Fail CI if `target/idl/*.json` changes but not committed.
-- [ ] **Rust Smart Contract Coverage**: Experiment with `cargo tarpaulin` to measure Rust logic test coverage.
+- [ ] **Tarpaulin** (Rust Code Coverage): [cargo-tarpaulin](https://github.com/xd009642/tarpaulin) Quantify how well the tests cover Rust logic.
 - [ ] **Grid Testing**: Extend matrix testing across multiple Node.js and Rust versions.
 - [ ] **Deploy Preview Apps**: Auto-preview frontends (once built) during PRs.
 - [ ] **Frontend UI**: Build a Vite or Next.js frontend to interact with the Counter contract.
 
 ---
 
-## ⭐ Why This Projectx is Special
+## ⭐ Why This Project is Special
 
 This project is deliberately built **not just to run**, but to:
 
@@ -185,6 +202,11 @@ This project is deliberately built **not just to run**, but to:
 - Future-proof your skills for real-world, production-grade Solana dApps.
 
 ---
+
+## 📚 Project Documentation
+
+- [Changelog](./CHANGELOG.md)
+- [Roadmap](./ROADMAP.md)
 
 ## 📜 License
 
