@@ -20,11 +20,26 @@ A simple **Anchor**-based **Solana smart contract** demonstrating:
 ```mermaid
 graph TD
     A[Root Directory]
-    A --> B[programs/solana_counter]
-    A --> C[tests/solana_counter.ts]
-    A --> D[migrations/deploy.ts]
-    A --> E[start-validator-if-needed.sh / stop-validator.sh]
-    A -- > F[Anchor.toml, Cargo.toml, tsconfig.json, etc.]
+    B1[programs]
+    B2[tests]
+    B3[migrations]
+    B4[validator scripts]
+    B5[configs and settings]
+
+    A --> B1
+    A --> B2
+    A --> B3
+    A --> B4
+    A --> B5
+
+    B1 --> C1[solana_counter]
+    B2 --> C2[solana_counter.ts]
+    B3 --> C3[deploy.ts]
+    B4 --> C4[start-validator-if-needed.sh]
+    B4 --> C5[stop-validator.sh]
+    B5 --> C6[Anchor.toml]
+    B5 --> C7[Cargo.toml]
+    B5 --> C8[tsconfig.json]
 ```
 
 ---
